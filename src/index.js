@@ -21,4 +21,4 @@ bot.on('message', async (payload, chat) => {
   }
 });
 
-bot.start();
+bot.start(process.env.PORT);
