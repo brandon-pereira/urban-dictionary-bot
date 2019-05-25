@@ -1,0 +1,41 @@
+{
+    "name": "urban-dictionary-bot",
+    "version": "1.0.0",
+    "description": "A chatbot for getting Urban Dictionary definitions",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon ./index",
+        "start:production": "node ./index",
+        "tunnel": "ngrok http 3000",
+        "test": "eslint . && jest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/brandon-pereira/urban-dictionary-bot.git"
+    },
+    "author": "brandon-pereira",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/brandon-pereira/urban-dictionary-bot/issues"
+    },
+    "homepage": "https://github.com/brandon-pereira/urban-dictionary-bot#readme",
+    "devDependencies": {
+        "@babel/preset-env": "^7.4.5",
+        "eslint": "^5.16.0",
+        "eslint-config-standard": "^12.0.0",
+        "eslint-plugin-import": "^2.17.3",
+        "eslint-plugin-node": "^9.1.0",
+        "eslint-plugin-promise": "^4.1.1",
+        "eslint-plugin-standard": "^4.0.0",
+        "jest": "^24.8.0",
+        "ngrok": "^3.1.1",
+        "nodemon": "^1.19.0",
+        "prettier": "^1.17.1"
+    },
+    "dependencies": {
+        "bootbot": "^1.0.16",
+        "dotenv": "^8.0.0",
+        "esm": "^3.2.25",
+        "urban-dictionary": "^2.2.1"
+    }
+}
