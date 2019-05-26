@@ -1,10 +1,13 @@
+import suggestions from './suggestions';
+const MAX_QUICK_REPLIES = 11;
+
 export const sendGreeting = async chat => {
   await chat.say(`Hello!`);
   await chat.say(`I'm the Urban Dictionary chat bot.`);
   await chat.say(`Ask me any word and I'll give you the street definition!`);
   await chat.say({
     text: `Alternatively, try one of the following.`,
-    quickReplies: ['yeet', 'woof', 'baz', 'lorem']
+    quickReplies: suggestions().slice(0, MAX_QUICK_REPLIES)
   });
 };
 
@@ -22,8 +25,9 @@ export const sendDefinition = async (chat, definition) => {
           title: '🎲',
           payload: 'RANDOM'
         },
-        ...definition.related
-      ]
+        ...definition.related,
+        ...suggestions()
+      ].slice(0, MAX_QUICK_REPLIES)
     });
   } else if (!definition.valid) {
     await chat.say(`Oops. Couldn't find that word :(`);
