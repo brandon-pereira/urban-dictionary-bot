@@ -3,25 +3,37 @@ import ud from 'urban-dictionary';
 export async function lookup (definition) {
   try {
     const def = await ud.term(definition);
-    return decode(def);
-  } catch (err) {
+    if (def && Array.isArray(def.entries) && def.entries.length) {
+      return decode(def.entries[0]);
+    }
     return { valid: false };
+  } catch (err) {
+    console.log(err);
+    return { error: true };
   }
 }
 
-export function decode (definitions) {
-  if (definitions && Array.isArray(definitions.entries) && definitions.entries.length) {
-    const entry = Object.assign({}, definitions.entries[0]);
-    const parsed = entry.definition.replace(/[[\]]/g, '');
-    const related = entry.definition.match(/[^[\]]+(?=])/g);
-
-    return {
-      valid: true,
-      definition: parsed,
-      related,
-      original: definitions.entries[0]
-    };
-  } else {
-    return { valid: false };
+export async function random () {
+  try {
+    const random = await ud.random();
+    const definition = decode(random);
+    definition.random = true;
+    return definition;
+  } catch (err) {
+    return { error: true };
   }
+}
+
+export function decode (entry) {
+  const _entry = Object.assign({}, entry);
+  const parsed = _entry.definition.replace(/[[\]]/g, '');
+  const related = _entry.definition.match(/[^[\]]+(?=])/g);
+  return {
+    error: false,
+    valid: true,
+    word: _entry.word,
+    definition: parsed,
+    related,
+    original: entry
+  };
 }

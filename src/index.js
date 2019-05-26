@@ -1,24 +1,23 @@
 import BootBot from 'bootbot';
-import { lookup } from './lib/urban-dictionary';
+import { lookup, random } from './lib/urban-dictionary';
+import { sendGreeting, sendDefinition } from './lib/copy';
+
 const bot = new BootBot({
   accessToken: process.env.FB_ACCESS_TOKEN,
   verifyToken: process.env.FB_ACCESS_TOKEN,
   appSecret: process.env.FB_APP_SECRET
 });
 
-bot.on('message', async (payload, chat) => {
-  console.log('init', payload.message.text);
-  const definition = await lookup(payload.message.text);
-  console.log(definition);
-  if (definition.valid) {
-    await chat.say(`🤖🖖`);
-    await chat.say({
-      text: definition.definition,
-      quickReplies: definition.related
-    });
+bot.setGetStartedButton('GET_STARTED');
+bot.on('postback:GET_STARTED', async (payload, chat) => sendGreeting(chat));
+bot.on('message', async (payload, chat, data) => {
+  let definition;
+  if (payload.message.quick_reply && payload.message.quick_reply.payload === 'RANDOM') {
+    definition = await random();
   } else {
-    await chat.say(`Oops. Couldn't find that word :(`);
+    definition = await lookup(payload.message.text);
   }
+  await sendDefinition(chat, definition);
 });
 
 bot.start(process.env.PORT);
