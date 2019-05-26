@@ -1,4 +1,5 @@
 import ud from 'urban-dictionary';
+const MAX_DEFINITION_LENGTH = 2000;
 
 export async function lookup (definition) {
   try {
@@ -25,15 +26,23 @@ export async function random () {
 }
 
 export function decode (entry) {
-  const _entry = Object.assign({}, entry);
-  const parsed = _entry.definition.replace(/[[\]]/g, '');
-  const related = _entry.definition.match(/[^[\]]+(?=])/g);
-  return {
+  const data = {
     error: false,
-    valid: true,
-    word: _entry.word,
+    valid: true
+  };
+  const _entry = Object.assign({}, entry);
+  const related = _entry.definition.match(/[^[\]]+(?=])/g) || [];
+  let parsed = _entry.definition.replace(/[[\]]/g, '');
+  const word = _entry.word;
+  if (parsed.length >= MAX_DEFINITION_LENGTH) {
+    data.truncated = true;
+    parsed = parsed.substring(0, MAX_DEFINITION_LENGTH - 3) + '...';
+  }
+  return {
+    ...data,
+    word,
     definition: parsed,
-    related: related || [],
+    related: [...new Set(related)],
     original: entry
   };
 }
