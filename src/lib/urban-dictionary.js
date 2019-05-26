@@ -33,7 +33,7 @@ export function decode (entry) {
     valid: true,
     word: _entry.word,
     definition: parsed,
-    related,
+    related: related || [],
     original: entry
   };
 }
