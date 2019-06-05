@@ -7,10 +7,10 @@ const opts = {
 
 export const sendGreeting = async chat => {
   await chat.say(`Hello!`, opts);
-  await chat.say(`I'm the Urban Dictionary chat bot.`, opts);
+  await chat.say(`I'm the Urban Dictionary bot.`, opts);
   await chat.say(`Ask me any word and I'll give you the street definition!`, opts);
   await chat.say({
-    text: `Alternatively, try one of the following.`,
+    text: `Alternatively, try one of the following:`,
     quickReplies: suggestions().slice(0, MAX_QUICK_REPLIES)
   });
 };
@@ -36,9 +36,22 @@ export const sendDefinition = async (chat, definition) => {
       },
       { typing: 500 }
     );
-  } else if (!definition.valid) {
-    await chat.say(`Oops. Couldn't find that word :(`, opts);
-  } else {
-    await chat.say(`Oops. We hit a snag on our end. We'll look into it`, opts);
+    return;
   }
+
+  if (!definition.valid) {
+    await chat.say(`I couldn't find that word!`, opts);
+    await chat.say(`It must be a really fancy one.`, opts);
+  } else {
+    await chat.say(`Oops. I hit a snag.`, opts);
+    await chat.say(`I'll try and fix this.`, opts);
+  }
+
+  await chat.say(
+    {
+      text: `How about one of these instead?`,
+      quickReplies: suggestions().slice(0, MAX_QUICK_REPLIES)
+    },
+    opts
+  );
 };
