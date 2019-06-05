@@ -9,6 +9,7 @@ const bot = new BootBot({
 });
 
 bot.setGetStartedButton('GET_STARTED');
+bot.setGreetingText('Your one stop for quick urban dictionary lookups.');
 bot.on('postback:GET_STARTED', async (payload, chat) => sendGreeting(chat));
 bot.on('message', async (payload, chat, data) => {
   let definition;
